@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
+
 # API de Assets e Orders com Docker, Nest.js e MongoDB 🚀
 
 Este é um projeto que cria uma API para gerenciar **assets** (ativos) e **orders** (ordens). A API está construída com **Nest.js**, utilizando **MongoDB** como banco de dados, e é containerizada com **Docker** para facilitar o deploy e a configuração do ambiente.
