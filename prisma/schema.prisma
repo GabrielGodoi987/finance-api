@@ -29,7 +29,7 @@ model Order {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   asset_id String
   asset Asset @relation(fields: [asset_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  prive Float
-  satus Status
+  price Float
+  status Status
 }
 

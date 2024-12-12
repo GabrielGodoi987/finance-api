@@ -1,21 +1,14 @@
 services:
-   financeapp:
-      build: 
-        context: .
-        dockerfile: Dockerfile
-      volumes:
-         - .:/home/app
-      ports:
-         - 3000:3000
-      depends_on:
-         - db
-      environment:
-         - NODE_ENV=development
-
-   db:
-      image: mongo:6.0
-      environment:
-         MONGODB_INITDB_ROOT_USERNAME: root
-         MONGODB_INITDB_ROOT_PASSWORD: root
-      ports:
-         - "27017:27017"
+  financeapi:
+    build: .
+    volumes:
+      - .:/home/node/app
+    ports:
+      - 3000:3000
+  database:
+    build: ./.docker/mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - 27017:27017
