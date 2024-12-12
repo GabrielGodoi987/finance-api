@@ -39,7 +39,7 @@ This is a project that creates an API to manage **assets** (assets) and **orders
 ```
  docker compose up -d ## this command keeps your terminal free after run the container
 
- ## you can you the following command to keep terminal in use, even if the conainer is up
+ ## you can use the following command to keep terminal in use, even if the conainer is up
 
  docker compose up
 
