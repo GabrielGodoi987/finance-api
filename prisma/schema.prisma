@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Status{
+  OPEN
+  PENDING
+  CLOSED
+}
+
+model Asset{
+  id String @id @map("_id")
+  symbol String
+  Order Order[]
+}
+
+model Order {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  asset_id String
+  asset Asset @relation(fields: [asset_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  prive Float
+  satus Status
+}
+
