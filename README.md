@@ -14,13 +14,12 @@ API para gerenciamento de **assets** (ativos) e **orders** (ordens) construída 
 
 ```
 finance-api/
-├── .docker/mongodb/          # (legado) a ser removido
 ├── prisma/
 │   ├── schema.prisma         # Schema do banco PostgreSQL
 │   └── prisma.config.ts
 ├── src/
 │   ├── main.ts               # Entry point da aplicação
-│   ├── domain/entities/      # Entidades de domínio (legado)
+│   ├── domain/entities/      # Entidades de domínio
 │   └── modules/
 │       ├── app.module.ts
 │       ├── assets/           # Módulo de ativos
@@ -104,7 +103,7 @@ npm run start:dev
 ### Rodar testes
 
 ```bash
-npm test           # testes unitários
+npm test:unit           # testes unitários
 npm run test:e2e   # testes e2e
 ```
 
