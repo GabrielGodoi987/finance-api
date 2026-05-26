@@ -2,65 +2,118 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-# Assets and Orders API with Docker, Nest.js and MongoDB 🚀
+# Finance API (Assets & Orders)
 
-This is a project that creates an API to manage **assets** (assets) and **orders** (orders). The API is built with **Nest.js**, using **MongoDB** as the database, and is containerized with **Docker** to facilitate deployment and configuration of the environment.
+API para gerenciamento de **assets** (ativos) e **orders** (ordens) construída com **Nest.js** e **PostgreSQL** via Prisma ORM, containerizada com Docker.
 
----
-
-## Main features
-
-- **List Assets**: Gets all assets.
-- **Create Assets**: Creates new assets by entering an **id** and **symbol**.
-- **Create Orders**: Creates new orders associated with an **asset**.
-- **List Orders**: Gets all orders, with information about **price**, **status**, and **asset_id**.
+> ⚠️ **Refatoração em andamento** — Este projeto está sendo reestruturado com novos conhecimentos e boas práticas, migrando de MongoDB para **PostgreSQL**.
 
 ---
 
-## Technologies used
+## Estrutura do Projeto
 
-- **Nest.js**: Framework for the backend.
-- **MongoDB**: NoSQL database to store **assets** and **orders**.
-- **Docker**: Containerization to simplify deployment and environment configuration.
+```
+finance-api/
+├── .docker/mongodb/          # (legado) a ser removido
+├── prisma/
+│   ├── schema.prisma         # Schema do banco PostgreSQL
+│   └── prisma.config.ts
+├── src/
+│   ├── main.ts               # Entry point da aplicação
+│   ├── domain/entities/      # Entidades de domínio (legado)
+│   └── modules/
+│       ├── app.module.ts
+│       ├── assets/           # Módulo de ativos
+│       │   ├── assets.controller.ts
+│       │   ├── assets.service.ts
+│       │   ├── assets.module.ts
+│       │   └── dto/
+│       ├── orders/           # Módulo de ordens
+│       │   ├── orders.controller.ts
+│       │   ├── orders.service.ts
+│       │   ├── orders.module.ts
+│       │   ├── dto/
+│       │   └── enums/
+│       └── prisma/           # Módulo Prisma (global)
+│           ├── prisma.module.ts
+│           └── prisma.service.ts
+├── test/                     # Testes e2e
+├── docker-compose.yml        # PostgreSQL + app
+├── docker-compose.test.yaml
+├── Dockerfile
+└── package.json
+```
 
 ---
 
-## Commands to set up the project and initiates it
+## Endpoints
 
-### Install all dependencies
+| Método | Rota       | Descrição            |
+|--------|------------|----------------------|
+| GET    | `/assets`  | Lista todos ativos   |
+| POST   | `/assets`  | Cria um novo ativo   |
+| GET    | `/orders`  | Lista todas ordens   |
+| POST   | `/orders`  | Cria uma nova ordem  |
 
-```
- npm install
+---
 
-```
+## Tecnologias
 
-### run the docker container
+- **Nest.js 10** — Framework backend
+- **PostgreSQL** — Banco de dados relacional
+- **Prisma ORM** — Camada de acesso a dados
+- **Docker** — Containerização
+- **Jest** — Testes unitários e e2e
 
-```
- docker compose up -d ## this command keeps your terminal free after run the container
+---
 
- ## you can use the following command to keep terminal in use, even if the conainer is up
+## Comandos
 
- docker compose up
+### Instalar dependências
 
-```
-
-### check all created containers
-
-```
- docker ps
-
-```
-
-### enter the bash in your docker container
-
-```
- docker compose exec -it [containerId] bash
+```bash
+npm install
 ```
 
-### with the following command you can start the application
+### Configurar variáveis de ambiente
 
+Copie o arquivo de exemplo e ajuste a `DATABASE_URL` se necessário:
+
+```bash
+cp .env.example .env
 ```
- npm run start:dev
 
+### Subir os containers (PostgreSQL + aplicação)
+
+```bash
+docker compose up -d
+```
+
+### Aplicar as migrations do Prisma
+
+```bash
+npx prisma migrate dev --name init
+```
+
+### Iniciar a aplicação em modo desenvolvimento
+
+```bash
+npm run start:dev
+```
+
+### Rodar testes
+
+```bash
+npm test           # testes unitários
+npm run test:e2e   # testes e2e
+```
+
+### Outros comandos úteis
+
+```bash
+npm run build              # compilar o projeto
+npm run lint               # lint + fix
+npm run format             # formatar código com Prettier
+npx prisma studio          # abrir interface gráfica do banco
+docker compose exec -it financeapi bash  # entrar no container
 ```

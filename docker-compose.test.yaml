@@ -1,15 +1,9 @@
 services:
-  financeapi:
-    build: .
-    volumes:
-      - .:/home/node/app
-    ports:
-      - 3000:3000
-  database:
+  db:
     image: postgres:latest
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=finance_db
+      - POSTGRES_DB=test_db
     ports:
       - "5432:5432"
