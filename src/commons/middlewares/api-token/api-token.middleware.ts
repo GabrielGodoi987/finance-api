@@ -9,8 +9,6 @@ export class ApiTokenMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     const token = req.headers['x-api-token'] as string;
 
-    console.log('Received API token:', token); // Log the received token for debugging
-
     if (!token) {
       return res.status(400).json({ error: 'API token is missing' });
     }
@@ -19,12 +17,10 @@ export class ApiTokenMiddleware implements NestMiddleware {
       return res.status(401).json({ error: 'Invalid API token' });
     }
 
-    console.log('Chegou aqui');
     next();
   }
 
   private validateToken(token: string) {
-    console.log(this.configService.get<string>('API_TOKEN'));
     return token === this.configService.get<string>('API_TOKEN');
   }
 }
