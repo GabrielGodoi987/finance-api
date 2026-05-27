@@ -1,10 +1,9 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AssetsModule } from './modules/assets/assets.module';
-import { OrdersModule } from './modules/orders/orders.module';
-import { PrismaModule } from './modules/prisma/prisma.module';
+import { ApiTokenMiddleware } from '../commons/middlewares/api-token/api-token.middleware';
+import { AssetsModule } from './assets/assets.module';
+import { OrdersModule } from './orders/orders.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -15,7 +14,9 @@ import { PrismaModule } from './modules/prisma/prisma.module';
     OrdersModule,
     PrismaModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ApiTokenMiddleware).forRoutes('*');
+  }
+}

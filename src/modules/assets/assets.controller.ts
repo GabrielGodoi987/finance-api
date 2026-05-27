@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Get, Post } from '@nestjs/common';
+import { ApplicationController } from '../../commons/decorators/application/application.decorator';
 import { AssetsService } from './assets.service';
 import { CreateAssetDto } from './dto/createAsset.dto';
 
-@Controller('assets')
+@ApplicationController('assets')
 export class AssetsController {
   constructor(private readonly assetsService: AssetsService) {}
 
