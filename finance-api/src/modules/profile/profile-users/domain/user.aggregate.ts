@@ -1,3 +1,4 @@
+import { UserStatus } from '@prisma/client';
 import { AggregateBase } from '../../../../commons/lib/aggregate.base';
 import {
   UserCreatedEvent,
@@ -12,6 +13,7 @@ export class UserAggregate extends AggregateBase {
   private password: string;
   private document: string;
   private role: string;
+  private status: string;
   private wallet: WalletEntity;
 
   private constructor(
@@ -21,6 +23,7 @@ export class UserAggregate extends AggregateBase {
     password: string,
     document: string,
     role: string,
+    status: string,
     wallet: WalletEntity,
   ) {
     super();
@@ -30,6 +33,7 @@ export class UserAggregate extends AggregateBase {
     this.password = password;
     this.document = document;
     this.role = role;
+    this.status = status;
     this.wallet = wallet;
   }
 
@@ -49,6 +53,7 @@ export class UserAggregate extends AggregateBase {
       password,
       document,
       role,
+      'CREATED',
       wallet,
     );
 
@@ -65,6 +70,7 @@ export class UserAggregate extends AggregateBase {
     password: string;
     document: string;
     role: string;
+    status: string;
     createdAt: Date;
     updatedAt: Date;
     wallet?: { id: string; balance: number; userId: string };
@@ -84,6 +90,7 @@ export class UserAggregate extends AggregateBase {
       data.password,
       data.document,
       data.role,
+      data.status,
       wallet,
     );
 
@@ -133,6 +140,34 @@ export class UserAggregate extends AggregateBase {
     return this.wallet;
   }
 
+  getStatus(): string {
+    return this.status;
+  }
+
+  update(data: {
+    name?: string;
+    email?: string;
+    password?: string;
+    document?: string;
+  }): void {
+    if (data.name !== undefined) this.name = data.name;
+    if (data.email !== undefined) this.email = data.email;
+    if (data.password !== undefined) this.password = data.password;
+    if (data.document !== undefined) this.document = data.document;
+  }
+
+  requestDeactivation(): void {
+    this.status = UserStatus.REQUEST_DEACTIVATE;
+    // emit event to deactivate user
+    // process by notification
+    // send to the system
+    // system process the deactivation
+    // then produces the event saying that the user was successfully deactivated
+    // send to the client
+    // client consumes it
+    // then, deactivated
+  }
+
   toJSON() {
     return {
       id: this.id,
@@ -140,6 +175,7 @@ export class UserAggregate extends AggregateBase {
       email: this.email,
       document: this.document,
       role: this.role,
+      status: this.status,
       wallet: this.wallet.toJSON(),
     };
   }

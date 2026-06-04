@@ -19,12 +19,12 @@ export class UserController {
     return this.createUseCase.execute(createUserDto);
   }
 
-  @Patch()
-  update(@Body() updateUserDto: UpdateUserDto) {
-    return this.updateUseCase.execute(updateUserDto);
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.updateUseCase.execute({ ...updateUserDto, id });
   }
 
-  @Post('/id')
+  @Post(':id/deactivation')
   requestDeactivation(@Param('id') id: string) {
     return this.requestDeactivationUseCase.execute(id);
   }

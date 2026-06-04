@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../prisma/prisma.service';
-import { UserRepository } from '../../domain/repositorie/user-repository';
+import { UserRepository } from '../../domain/repositories/user-repository';
 import { UserAggregate } from '../../domain/user.aggregate';
 import { UserMapper } from '../mappers/user.mapper';
 
@@ -20,11 +20,9 @@ export class UserRepositoryImpl implements UserRepository {
         password: data.password,
         document: data.document,
         role: data.role as any,
+        status: data.status as any,
         wallet: {
-          create: {
-            id: data.wallet.id,
-            balance: data.wallet.balance,
-          },
+          create: { id: data.wallet.id, balance: data.wallet.balance },
         },
       },
       update: {
@@ -33,6 +31,7 @@ export class UserRepositoryImpl implements UserRepository {
         password: data.password,
         document: data.document,
         role: data.role as any,
+        status: data.status as any,
       },
       include: { wallet: true },
     });
@@ -75,6 +74,7 @@ export class UserRepositoryImpl implements UserRepository {
       password: string;
       document: string;
       role: string;
+      status: string;
     }>,
   ): Promise<UserAggregate> {
     const user = await this.prisma.user.update({
@@ -85,6 +85,7 @@ export class UserRepositoryImpl implements UserRepository {
         ...(data.password !== undefined && { password: data.password }),
         ...(data.document !== undefined && { document: data.document }),
         ...(data.role !== undefined && { role: data.role as any }),
+        ...(data.status !== undefined && { status: data.status as any }),
       },
       include: { wallet: true },
     });

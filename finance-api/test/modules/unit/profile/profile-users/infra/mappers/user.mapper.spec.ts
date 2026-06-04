@@ -10,6 +10,7 @@ describe('UserMapper', () => {
     password: 'hashed-password',
     document: '12345678901',
     role: 'USER',
+    status: 'CREATED',
     createdAt: new Date('2024-01-01'),
     updatedAt: new Date('2024-06-01'),
     wallet: {
@@ -34,6 +35,7 @@ describe('UserMapper', () => {
       expect(aggregate.getRole()).toBe(prismaUser.role);
       expect(aggregate.getWallet().getId()).toBe(prismaUser.wallet.id);
       expect(aggregate.getWallet().getBalance()).toBe(prismaUser.wallet.balance);
+      expect(aggregate.getStatus()).toBe(prismaUser.status);
     });
 
     it('should create wallet when Prisma user has no wallet', () => {
@@ -61,6 +63,7 @@ describe('UserMapper', () => {
         password: aggregate.getPassword(),
         document: aggregate.getDocument(),
         role: aggregate.getRole(),
+        status: aggregate.getStatus(),
         wallet: {
           id: aggregate.getWallet().getId(),
           balance: aggregate.getWallet().getBalance(),
@@ -82,6 +85,7 @@ describe('UserMapper', () => {
       expect(persistenceData.password).toBe(prismaUser.password);
       expect(persistenceData.document).toBe(prismaUser.document);
       expect(persistenceData.role).toBe(prismaUser.role);
+      expect(persistenceData.status).toBe(prismaUser.status);
       expect(persistenceData.wallet.id).toBe(prismaUser.wallet.id);
       expect(persistenceData.wallet.balance).toBe(prismaUser.wallet.balance);
     });

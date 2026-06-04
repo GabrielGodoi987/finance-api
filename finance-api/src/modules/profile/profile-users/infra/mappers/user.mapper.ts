@@ -7,6 +7,7 @@ type PrismaUser = {
   password: string;
   document: string;
   role: string;
+  status: string;
   createdAt: Date;
   updatedAt: Date;
   wallet?: { id: string; balance: number; userId: string } | null;
@@ -21,6 +22,7 @@ export class UserMapper {
       password: user.password,
       document: user.document,
       role: user.role,
+      status: user.status,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
       wallet: user.wallet
@@ -41,6 +43,7 @@ export class UserMapper {
       password: aggregate.getPassword(),
       document: aggregate.getDocument(),
       role: aggregate.getRole(),
+      status: aggregate.getStatus(),
       wallet: {
         id: aggregate.getWallet().getId(),
         balance: aggregate.getWallet().getBalance(),

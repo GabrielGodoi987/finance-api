@@ -26,13 +26,20 @@ enum OrderType {
   BUY
 }
 
+enum UserStatus {
+  REQUEST_DEACTIVATE
+  DEACTIVATED
+  ACTIVE
+  CREATED
+}
+
 model User {
-  id       String   @id @default(cuid())
+  id       String     @id @default(cuid())
   name     String
-  email    String   @unique
-  document String   @unique
-  isActive Boolean  @default(true) @map("is_active")
-  role     UserRole @default(CLIENT)
+  email    String     @unique
+  document String     @unique
+  status   UserStatus @default(CREATED) @map("is_active")
+  role     UserRole   @default(CLIENT)
   password String
 
   wallet Wallet?
