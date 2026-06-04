@@ -1,0 +1,29 @@
+@base_url = http://localhost:3000
+
+###
+POST {{base_url}}/orders HTTP/1.1
+Content-Type: application/json
+{
+ "totalPrice": 22.7,
+ "assetId": "US0378331005",
+ "userId": "user-123",
+ "status": "PENDING",
+ "type": "BUY"
+}
+
+###
+
+GET {{base_url}}/orders
+###
+
+POST {{base_url}}/assets  HTTP/1.1
+Content-Type: application/json
+{
+ "id": "US0378331005",
+ "symbol": "AAPL",
+ "price": 150.0
+}
+###
+GET {{base_url}}/assets
+
+###

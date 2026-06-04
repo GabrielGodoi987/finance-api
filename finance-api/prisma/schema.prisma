@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+  adapter  = "postgresql"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  SYS_ADMIN
+  CLIENT
+}
+
+enum Status {
+  OPEN
+  PENDING
+  EXECUTED
+  REJECTED
+  CANCELED
+  CLOSED
+}
+
+enum OrderType {
+  SELL
+  BUY
+}
+
+model User {
+  id       String   @id @default(cuid())
+  name     String
+  email    String   @unique
+  document String   @unique
+  isActive Boolean  @default(true) @map("is_active")
+  role     UserRole @default(CLIENT)
+  password String
+
+  wallet Wallet?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("users")
+}
+
+model Wallet {
+  id      String @id @default(cuid())
+  balance Float
+  userId  String @unique @map("user_id")
+  user    User   @relation(fields: [userId], references: [id])
+
+  @@map("wallets")
+}
+
+model Asset {
+  id     String  @id @default(cuid())
+  symbol String  @unique
+  price  Float
+  orders Order[]
+
+  @@map("assets")
+}
+
+model Order {
+  id         String    @id @default(cuid())
+  totalPrice Float     @map("total_price")
+  status     Status    @default(PENDING)
+  type       OrderType
+
+  userId  String @map("user_id")
+  assetId String @map("asset_id")
+  asset   Asset  @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@index([assetId])
+  @@map("orders")
+}
