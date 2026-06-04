@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class RequestDeactivation {
-  execute() {}
+export class RequestDeactivationUseCase {
+  constructor() {}
+  execute(id: string) {}
 }
