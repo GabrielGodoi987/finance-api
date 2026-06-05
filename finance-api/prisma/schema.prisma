@@ -42,7 +42,8 @@ model User {
   role     UserRole   @default(CLIENT)
   password String
 
-  wallet Wallet?
+  wallet        Wallet?
+  notifications Notification[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
@@ -83,4 +84,21 @@ model Order {
 
   @@index([assetId])
   @@map("orders")
+}
+
+model Notification {
+  id          String @id @default(cuid())
+  type        String
+  title       String
+  content     String
+  aggregateId String
+  userId      String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  readAt    DateTime?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
 }
