@@ -7,7 +7,9 @@ export class ApiTokenMiddleware implements NestMiddleware {
   constructor(private readonly configService: ConfigService) {}
 
   use(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers['x-api-token'] as string;
+    const token = req.header('x-api-token');
+    console.log('Headers recebidos:', JSON.stringify(req.headers || {}));
+    console.log('Token via header():', token);
 
     if (!token) {
       return res.status(400).json({ error: 'API token is missing' });

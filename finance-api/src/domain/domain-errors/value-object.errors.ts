@@ -11,3 +11,10 @@ export class PriceIsNotValidError extends Error {
     this.name = 'PriceIsNotValidError';
   }
 }
+
+export class DocumentIsNotValidError extends Error {
+  constructor(params?: { message: string }) {
+    super(params?.message || 'Document is not valid');
+    this.name = 'DocumentIsNotValidError';
+  }
+}

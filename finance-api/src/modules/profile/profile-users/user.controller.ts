@@ -2,11 +2,12 @@ import { Body, Param, Patch, Post } from '@nestjs/common';
 import { ApplicationController } from '../../../commons/decorators/application/application.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDocumentPipe } from './pipes/user-document.pipe';
 import { CreateUseCase } from './use-case/create.use-case';
 import { RequestDeactivationUseCase } from './use-case/reuqest-deactivate';
 import { UpdateUseCase } from './use-case/update.use-case';
 
-@ApplicationController('/client/users')
+@ApplicationController('client/users')
 export class UserController {
   constructor(
     private readonly createUseCase: CreateUseCase,
@@ -15,8 +16,15 @@ export class UserController {
   ) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.createUseCase.execute(createUserDto);
+  create(
+    @Body() createUserDto: CreateUserDto,
+    @Body('document', UserDocumentPipe)
+    documentInfo: { document: string; country: string },
+  ) {
+    return this.createUseCase.execute({
+      ...createUserDto,
+      document: documentInfo.document,
+    });
   }
 
   @Patch(':id')

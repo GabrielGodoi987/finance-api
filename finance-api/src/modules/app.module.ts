@@ -1,13 +1,16 @@
+import { BullModule } from '@nestjs/bullmq';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { BullModule } from '@nestjs/bullmq';
 import { ApiTokenMiddleware } from '../commons/middlewares/api-token/api-token.middleware';
-import { AssetsModule } from './system/assets/assets.module';
 import { NotificationModule } from './notification/notification.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { OrdersModule } from './processing/orders/orders.module';
+import { ProfileModule } from './profile/profile.module';
 import { SharedModule } from './shared/shared.module';
+import { AssetsModule } from './system/assets/assets.module';
+import { SystemModule } from './system/system.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
@@ -26,6 +29,9 @@ import { SharedModule } from './shared/shared.module';
       }),
       inject: [ConfigService],
     }),
+    ProfileModule,
+    SystemModule,
+    TransactionsModule,
     AssetsModule,
     OrdersModule,
     PrismaModule,

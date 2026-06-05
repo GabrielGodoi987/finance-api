@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -8,7 +9,10 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Injectable()
 export class UpdateUseCase {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    @Inject('UserRepository') 
+    private readonly userRepository: UserRepository
+  ) { }
 
   async execute(updateUserDto: UpdateUserDto) {
     const { id, email, name, password, document } = updateUserDto;

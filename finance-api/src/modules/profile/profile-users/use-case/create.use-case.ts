@@ -1,6 +1,6 @@
-import { BadRequestException } from '@nestjs/common';
-import { UserRole } from '@prisma/client';
+import { BadRequestException, Inject } from '@nestjs/common';
 import { v4 } from 'uuid';
+import { UserRole } from '../../../../domain/value-objects/user-role.enum';
 import { EventBus } from '../../../shared/event-broker/event-bus.service';
 import { UserRepository } from '../domain/repositories/user-repository';
 import { UserAggregate } from '../domain/user.aggregate';
@@ -8,6 +8,7 @@ import { CreateUserDto } from '../dto/create-user.dto';
 
 export class CreateUseCase {
   constructor(
+    @Inject('UserRepository')
     private readonly userRepository: UserRepository,
     private readonly eventBus: EventBus,
   ) {}

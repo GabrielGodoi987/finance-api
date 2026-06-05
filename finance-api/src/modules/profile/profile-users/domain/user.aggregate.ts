@@ -1,5 +1,5 @@
-import { UserStatus } from '@prisma/client';
 import { AggregateBase } from '../../../../commons/lib/aggregate.base';
+import { UserStatus } from '../../../../domain/value-objects/user-status.enum';
 import {
   UserCreatedEvent,
   WalletCreatedEvent,
@@ -154,6 +154,8 @@ export class UserAggregate extends AggregateBase {
     if (data.email !== undefined) this.email = data.email;
     if (data.password !== undefined) this.password = data.password;
     if (data.document !== undefined) this.document = data.document;
+
+    // events to update user
   }
 
   requestDeactivation(): void {

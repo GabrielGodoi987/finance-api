@@ -1,9 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { UserRepository } from '../domain/repositories/user-repository';
 
 @Injectable()
 export class RequestDeactivationUseCase {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    @Inject('UserRepository')
+    private readonly userRepository: UserRepository
+  ) { }
 
   async execute(id: string) {
     const user = await this.userRepository.findById(id);
