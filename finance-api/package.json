@@ -18,7 +18,8 @@
     "test:e2e": "jest --selectProjects e2e",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "prepare": "husky"
   },
   "dependencies": {
     "@angular/core": "^21.2.16",
@@ -71,6 +72,7 @@
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
+    "husky": "^9.1.7",
     "jest": "^30.4.2",
     "prettier": "^3.8.3",
     "prisma": "^7.8.0",

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { NotificationAggregate } from '../domain/notification.aggregate';
-import { NotificationRepository } from '../repositories/notification.repository';
+import { NotificationRepository } from '../domain/repositories/notification.repository';
 
 @Injectable()
 export class NotificationHandler {

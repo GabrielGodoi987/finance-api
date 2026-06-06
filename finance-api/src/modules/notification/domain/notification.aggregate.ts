@@ -1,4 +1,4 @@
-import { AggregateBase } from "../../../commons/lib/aggregate.base";
+import { AggregateBase } from '../../../commons/lib/aggregate.base';
 
 export class NotificationAggregate extends AggregateBase {
   private id: string;
@@ -9,7 +9,7 @@ export class NotificationAggregate extends AggregateBase {
   private aggregateId: string;
   private readAt: Date | null;
 
-  private constructor(
+  constructor(
     id: string,
     userId: string,
     type: string,
@@ -47,31 +47,6 @@ export class NotificationAggregate extends AggregateBase {
     );
   }
 
-  static fromPersistence(data: {
-    id: string;
-    userId: string;
-    type: string;
-    title: string;
-    content: string;
-    aggregateId: string;
-    createdAt: Date;
-    updatedAt: Date;
-    readAt: Date | null;
-  }): NotificationAggregate {
-    const entity = new NotificationAggregate(
-      data.id,
-      data.userId,
-      data.type,
-      data.title,
-      data.content,
-      data.aggregateId,
-      data.readAt,
-    );
-    entity.setCreatedAt(data.createdAt);
-    entity.setUpdatedAt(data.updatedAt);
-    return entity;
-  }
-
   getId(): string {
     return this.id;
   }
@@ -98,6 +73,10 @@ export class NotificationAggregate extends AggregateBase {
 
   getReadAt(): Date | null {
     return this.readAt;
+  }
+
+  setReadAt(readDate: Date): void {
+    this.readAt = readDate;
   }
 
   isRead(): boolean {

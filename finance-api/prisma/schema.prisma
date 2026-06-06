@@ -71,6 +71,7 @@ model Asset {
 
 model Order {
   id         String    @id @default(cuid())
+  quantity   Float
   totalPrice Float     @map("total_price")
   status     Status    @default(PENDING)
   type       OrderType
