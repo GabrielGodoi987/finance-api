@@ -13,11 +13,11 @@ export class FindAllUseCase {
   async execute(
     findNotificationDto: FindNotificationDto,
   ): Promise<NotificationAggregate[]> {
-    const userNotifications =
-      await this.notificationRepository.findManyByEmail(findNotificationDto);
+    const userNotifications = await this.notificationRepository.findByUserEmail(
+      findNotificationDto.email,
+    );
 
     if (userNotifications.length == 0) {
-      console.log(userNotifications);
       return [];
     }
 

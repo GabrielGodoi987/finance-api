@@ -1,12 +1,12 @@
 import { Test } from '@nestjs/testing';
-import { FindAllUseCase } from '../../../../../src/modules/notification/use-cases/findall.use-case';
+import { FindAllUseCase } from '../../../../../src/modules/notification/use-cases/find-all.use-case';
 
 describe('FindAllUseCase - unit test', () => {
   let useCase: FindAllUseCase;
   const mockMotificationRepository: any = {
-    findByUnique: jest.fn(),
+    findById: jest.fn(),
     findByUserId: jest.fn(),
-    findManyByEmail: jest.fn(),
+    findByUserEmail: jest.fn(),
     save: jest.fn(),
     markAsRead: jest.fn(),
     markOneAsRead: jest.fn(),
@@ -41,7 +41,7 @@ describe('FindAllUseCase - unit test', () => {
   });
 
   it('should return an empty array since there is no notifications', async () => {
-    mockMotificationRepository.findManyByEmail.mockResolvedValue([]);
+    mockMotificationRepository.findByUserEmail.mockResolvedValue([]);
 
     const result = await useCase.execute({
       email: 'example@gmail.com',
@@ -49,39 +49,35 @@ describe('FindAllUseCase - unit test', () => {
       limit: 10,
     });
 
-    expect(mockMotificationRepository.findManyByEmail).toHaveBeenCalledTimes(1);
-    expect(mockMotificationRepository.findManyByEmail).toHaveBeenCalledWith({
-      email: 'example@gmail.com',
-      page: 0,
-      limit: 10,
-    });
+    expect(mockMotificationRepository.findByUserEmail).toHaveBeenCalledTimes(1);
+    expect(mockMotificationRepository.findByUserEmail).toHaveBeenCalledWith(
+      'example@gmail.com',
+    );
     expect(result).toEqual([]);
   });
 
-  it('should return all the notification from the same user - with pagination', async () => {
+  it('should return all the notification from the same user', async () => {
     const fakeNotifications = [makeFakeNotification(), makeFakeNotification()];
-    mockMotificationRepository.findManyByEmail.mockResolvedValue(
+    mockMotificationRepository.findByUserEmail.mockResolvedValue(
       fakeNotifications,
     );
 
     const result = await useCase.execute({
       email: 'user@example.com',
-      page: 2,
-      limit: 20,
+      page: 0,
+      limit: 10,
     });
 
-    expect(mockMotificationRepository.findManyByEmail).toHaveBeenCalledWith({
-      email: 'user@example.com',
-      page: 2,
-      limit: 20,
-    });
+    expect(mockMotificationRepository.findByUserEmail).toHaveBeenCalledWith(
+      'user@example.com',
+    );
     expect(result).toHaveLength(2);
     expect(result).toBe(fakeNotifications);
   });
 
-  it('should return all the notification from the same user - without pagination', async () => {
+  it('should return a single notification', async () => {
     const fakeNotifications = [makeFakeNotification()];
-    mockMotificationRepository.findManyByEmail.mockResolvedValue(
+    mockMotificationRepository.findByUserEmail.mockResolvedValue(
       fakeNotifications,
     );
 
@@ -91,11 +87,9 @@ describe('FindAllUseCase - unit test', () => {
       limit: 10,
     });
 
-    expect(mockMotificationRepository.findManyByEmail).toHaveBeenCalledWith({
-      email: 'user@example.com',
-      page: 0,
-      limit: 10,
-    });
+    expect(mockMotificationRepository.findByUserEmail).toHaveBeenCalledWith(
+      'user@example.com',
+    );
     expect(result).toHaveLength(1);
     expect(result).toBe(fakeNotifications);
   });

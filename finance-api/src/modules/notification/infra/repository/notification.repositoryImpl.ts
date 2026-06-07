@@ -1,24 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { NotificationAggregate } from '../../domain/notification.aggregate';
 import { NotificationRepository } from '../../domain/repositories/notification.repository';
-import { FindNotificationDto } from '../../dto/find-notification.dto';
 import { NotificationMapper } from '../mapper/notification.mapper';
 
 @Injectable()
 export class NotificationRepositoryImpl implements NotificationRepository {
   constructor(private readonly prisma: PrismaService) {}
-  async findByUnique({
-    where,
-    select,
-  }: {
-    where: Prisma.NotificationWhereUniqueInput;
-    select?: Prisma.NotificationSelect;
-  }): Promise<NotificationAggregate | null> {
-    const notification = await this.prisma.notification.findUnique({
-      where,
-      select,
+
+  async findById(id: string): Promise<NotificationAggregate | null> {
+    const notification = await this.prisma.getClient().notification.findUnique({
+      where: { id },
     });
 
     if (!notification) {
@@ -28,26 +20,21 @@ export class NotificationRepositoryImpl implements NotificationRepository {
     return NotificationMapper.toAggregate(notification);
   }
 
-  async findManyByEmail(
-    findNotificationDto: FindNotificationDto,
-  ): Promise<NotificationAggregate[]> {
-    const notifications = await this.prisma.notification.findMany({
+  async findByUserEmail(email: string): Promise<NotificationAggregate[]> {
+    const notifications = await this.prisma.getClient().notification.findMany({
       where: {
         user: {
-          email: findNotificationDto.email,
+          email,
         },
       },
-      skip: findNotificationDto.page,
-      take: findNotificationDto.limit,
+      orderBy: { createdAt: 'desc' },
     });
 
-    return notifications.map((n) => {
-      return NotificationMapper.toAggregate(n);
-    });
+    return notifications.map((n) => NotificationMapper.toAggregate(n));
   }
 
   async findByUserId(userId: string): Promise<NotificationAggregate[]> {
-    const rows = await this.prisma.notification.findMany({
+    const rows = await this.prisma.getClient().notification.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
     });
@@ -58,19 +45,19 @@ export class NotificationRepositoryImpl implements NotificationRepository {
     notification: NotificationAggregate,
   ): Promise<NotificationAggregate> {
     const data = notification.toJSON();
-    const row = await this.prisma.notification.create({ data });
+    const row = await this.prisma.getClient().notification.create({ data });
     return NotificationMapper.toAggregate(row);
   }
 
   async markAsRead(ids: string[]): Promise<void> {
-    await this.prisma.notification.updateMany({
+    await this.prisma.getClient().notification.updateMany({
       where: { id: { in: ids } },
       data: { readAt: new Date() },
     });
   }
 
   async markOneAsRead(id: string): Promise<void> {
-    await this.prisma.notification.update({
+    await this.prisma.getClient().notification.update({
       where: {
         id,
         readAt: null,
@@ -82,7 +69,7 @@ export class NotificationRepositoryImpl implements NotificationRepository {
   }
 
   async countUnreadByUserId(userId: string): Promise<number> {
-    return this.prisma.notification.count({
+    return this.prisma.getClient().notification.count({
       where: { userId, readAt: null },
     });
   }

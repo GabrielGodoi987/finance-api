@@ -29,26 +29,26 @@
 ## 2. Fluxo de Notification — Prioridade: ALTA
 
 ### 2.1 Use Cases (4 arquivos vazios)
-- [ ] `findBy.use-case.ts` — Buscar notificação por ID ou filtro
-- [ ] `findall.use-case.ts` — Listar notificações do usuário logado (com paginação)
-- [ ] `mark-one-as-read.use-case.ts` — Marcar uma notificação como lida
-- [ ] `mark-all-as-read.use-case.ts` — Marcar todas como lidas
+- [ x ] `find-one-by-email.use-case.ts` — Buscar notificações através do email do usuário
+- [ x ] `findall.use-case.ts` — Listar notificações do usuário logado (com paginação)
+- [ x ] `mark-one-as-read.use-case.ts` — Marcar uma notificação como lida
+- [ x ] `mark-all-as-read.use-case.ts` — Marcar todas como lidas
 
 ### 2.2 Controller (`notification.controller.ts`)
-- [ ] `GET /` → `findAll()` — Listar notificações do usuário autenticado
-- [ ] `GET /:id` → `findOneByUserEmail()` — Buscar notificação específica (ou renomear para `findOne`)
-- [ ] `PATCH /:id/read` → `markOneAsRead()` — Marcar uma como lida
-- [ ] `PATCH /read-all` → `markAllAsRead()` — Marcar todas como lidas
-- [ ] Adicionar decorators HTTP (`@Get`, `@Patch`, `@Param`, `@Body`, etc.)
-- [ ] Conectar com os use cases
+- [ x ] `GET /` → `findAll()` — Listar notificações do usuário autenticado
+- [ x ] `GET /:id` → `findOneById()` — Buscar notificação específica (ou renomear para `findOne`)
+- [ x ] `PATCH /:id/read` → `markOneAsRead()` — Marcar uma como lida
+- [ x ] `PATCH /read-all` → `markAllAsRead()` — Marcar todas como lidas
+- [ x ] Adicionar decorators HTTP (`@Get`, `@Patch`, `@Param`, `@Body`, etc.)
+- [ x ] Conectar com os use cases
 
 ### 2.3 Repository
 - [x] Interface `notification.repository.ts` — Implementada
 - [x] Implementação `notification.repositoryImpl.ts` — Implementada
-- [ ] Verificar se `notification.repositoryImpl.ts` usa `NotificationMapper` (atualmente chama `NotificationAggregate.fromPersistence()` e `toJSON()` diretamente)
+- [ x ] Verificar se `notification.repositoryImpl.ts` usa `NotificationMapper` (atualmente chama `NotificationAggregate.fromPersistence()` e `toJSON()` diretamente)
 
 ### 2.4 DTOs
-- [ ] Criar `src/modules/notification/dto/` com:
+- [ x ] Criar `src/modules/notification/dto/` com:
   - `find-notifications.dto.ts` (query params: page, limit, unreadOnly)
   - `mark-read.dto.ts` (body com array de IDs ou confirmação)
 

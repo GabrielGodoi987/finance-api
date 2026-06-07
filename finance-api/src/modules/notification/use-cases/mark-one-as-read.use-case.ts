@@ -16,14 +16,7 @@ export class MarkOneAsReadUseCase {
     notificationId: string;
   }) {
     const doesNotificationExists =
-      await this.notificationRepository.findByUnique({
-        where: {
-          id: notificationId,
-          user: {
-            email,
-          },
-        },
-      });
+      await this.notificationRepository.findById(notificationId);
 
     if (!doesNotificationExists) {
       throw new NotFoundException('Notification was not found');

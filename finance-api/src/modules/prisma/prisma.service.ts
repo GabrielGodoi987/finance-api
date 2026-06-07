@@ -1,8 +1,9 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { Pool } from 'pg';
+import { PrismaTransactionStorage } from '../../infra/database/prisma-context/prisma.context';
 
 @Injectable()
 export class PrismaService
@@ -22,6 +23,16 @@ export class PrismaService
     super({
       adapter,
     });
+  }
+
+  async runInTransaction<T>(fn: () => Promise<T>): Promise<T> {
+    return super.$transaction(async (tx) => {
+      return PrismaTransactionStorage.run(tx, () => fn());
+    });
+  }
+
+  getClient(): Prisma.TransactionClient | this {
+    return PrismaTransactionStorage.getStore() ?? this;
   }
 
   async onModuleInit() {

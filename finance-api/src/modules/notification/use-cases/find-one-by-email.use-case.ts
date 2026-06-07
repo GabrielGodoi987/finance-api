@@ -1,4 +1,9 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { NotificationAggregate } from '../domain/notification.aggregate';
 import { NotificationRepository } from '../domain/repositories/notification.repository';
 
@@ -11,22 +16,22 @@ export class FindOneByEmailUseCase {
 
   async execute({
     id,
-    email,
+    userId,
   }: {
     id: string;
-    email: string;
+    userId: string;
   }): Promise<NotificationAggregate> {
-    const findNotification = await this.notificationRepository.findByUnique({
-      where: {
-        id,
-        user: {
-          email,
-        },
-      },
-    });
+    const findNotification = await this.notificationRepository.findById(id);
 
     if (!findNotification) {
-      throw new BadRequestException('Notification does not exists');
+      throw new NotFoundException('Notification does not exists');
+    }
+
+    if (findNotification.getUserId() !== userId) {
+      console.error(
+        `user ${userId} is trying to reach user ${findNotification.getUserId()} account`,
+      );
+      throw new BadRequestException('Notification erro');
     }
 
     return findNotification;
