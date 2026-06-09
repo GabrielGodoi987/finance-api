@@ -17,8 +17,10 @@ export class NotificationAggregate extends AggregateBase {
     content: string,
     aggregateId: string,
     readAt: Date | null,
+    createdAt: Date,
+    updatedAt: Date,
   ) {
-    super();
+    super(createdAt, updatedAt);
     this.id = id;
     this.userId = userId;
     this.type = type;
@@ -44,6 +46,8 @@ export class NotificationAggregate extends AggregateBase {
       content,
       aggregateId,
       null,
+      new Date(),
+      new Date(),
     );
   }
 

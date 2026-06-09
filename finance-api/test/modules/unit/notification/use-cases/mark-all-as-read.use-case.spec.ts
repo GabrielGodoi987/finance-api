@@ -1,8 +1,8 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { PrismaService } from '../../../../../src/modules/prisma/prisma.service';
-import { MarkAllAsReadUseCase } from '../../../../../src/modules/notification/use-cases/mark-all-as-read.use-case';
 import { MarkReadDto } from '../../../../../src/modules/notification/dto/mark-read.dto';
+import { MarkAllAsReadUseCase } from '../../../../../src/modules/notification/use-cases/mark-all-as-read.use-case';
+import { PrismaService } from '../../../../../src/modules/prisma/prisma.service';
 
 describe('MarkAllAsReadUseCase - unit test', () => {
   let useCase: MarkAllAsReadUseCase;
@@ -29,9 +29,11 @@ describe('MarkAllAsReadUseCase - unit test', () => {
     };
 
     mockPrismaService = {
-      runInTransaction: jest.fn().mockImplementation(async (fn: () => Promise<void>) => {
-        await fn();
-      }),
+      runInTransaction: jest
+        .fn()
+        .mockImplementation(async (fn: () => Promise<void>) => {
+          await fn();
+        }),
     };
 
     const module = await Test.createTestingModule({
@@ -64,15 +66,27 @@ describe('MarkAllAsReadUseCase - unit test', () => {
     await useCase.execute({ userId: 'user-1', markReadDto: dto });
 
     expect(mockNotificationRepository.findById).toHaveBeenCalledTimes(2);
-    expect(mockNotificationRepository.findById).toHaveBeenNthCalledWith(1, 'id-1');
-    expect(mockNotificationRepository.findById).toHaveBeenNthCalledWith(2, 'id-2');
+    expect(mockNotificationRepository.findById).toHaveBeenNthCalledWith(
+      1,
+      'id-1',
+    );
+    expect(mockNotificationRepository.findById).toHaveBeenNthCalledWith(
+      2,
+      'id-2',
+    );
     expect(mockPrismaService.runInTransaction).toHaveBeenCalledTimes(1);
-    expect(mockNotificationRepository.markAsRead).toHaveBeenCalledWith(['id-1', 'id-2']);
+    expect(mockNotificationRepository.markAsRead).toHaveBeenCalledWith([
+      'id-1',
+      'id-2',
+    ]);
   });
 
   it('should skip notifications that are already read', async () => {
     const notification1 = makeFakeNotification({ getId: () => 'id-1' });
-    const notification2 = makeFakeNotification({ getId: () => 'id-2', isRead: () => true });
+    const notification2 = makeFakeNotification({
+      getId: () => 'id-2',
+      isRead: () => true,
+    });
 
     mockNotificationRepository.findById
       .mockResolvedValueOnce(notification1)
@@ -82,11 +96,16 @@ describe('MarkAllAsReadUseCase - unit test', () => {
 
     await useCase.execute({ userId: 'user-1', markReadDto: dto });
 
-    expect(mockNotificationRepository.markAsRead).toHaveBeenCalledWith(['id-1']);
+    expect(mockNotificationRepository.markAsRead).toHaveBeenCalledWith([
+      'id-1',
+    ]);
   });
 
   it('should return early when no valid IDs are provided', async () => {
-    const notification1 = makeFakeNotification({ getId: () => 'id-1', isRead: () => true });
+    const notification1 = makeFakeNotification({
+      getId: () => 'id-1',
+      isRead: () => true,
+    });
 
     mockNotificationRepository.findById.mockResolvedValue(notification1);
 
@@ -109,13 +128,15 @@ describe('MarkAllAsReadUseCase - unit test', () => {
   });
 
   it('should throw BadRequestException when notification belongs to another user', async () => {
-    mockNotificationRepository.findById.mockResolvedValue(
+    await mockNotificationRepository.findById.mockResolvedValue(
       makeFakeNotification({ getUserId: () => 'user-2' }),
     );
 
     const dto: MarkReadDto = { ids: ['id-1'] };
 
-    await expect(
+    jest.spyOn(console, 'error').mockImplementation();
+
+    expect(
       useCase.execute({ userId: 'user-1', markReadDto: dto }),
     ).rejects.toThrow(BadRequestException);
   });

@@ -4,10 +4,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { PrismaService } from '../../prisma/prisma.service';
 import { NotificationAggregate } from '../domain/notification.aggregate';
 import { NotificationRepository } from '../domain/repositories/notification.repository';
 import { MarkReadDto } from '../dto/mark-read.dto';
-import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class MarkAllAsReadUseCase {

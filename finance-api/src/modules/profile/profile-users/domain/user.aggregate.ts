@@ -25,8 +25,10 @@ export class UserAggregate extends AggregateBase {
     role: string,
     status: string,
     wallet: WalletEntity,
+    createdAt: Date,
+    updatedAt: Date,
   ) {
-    super();
+    super(createdAt, updatedAt);
     this.id = id;
     this.name = name;
     this.email = email;
@@ -55,6 +57,8 @@ export class UserAggregate extends AggregateBase {
       role,
       'CREATED',
       wallet,
+      new Date(),
+      new Date(),
     );
 
     aggregate.addEvent(new UserCreatedEvent(id, aggregate.toJSON()));
@@ -92,6 +96,8 @@ export class UserAggregate extends AggregateBase {
       data.role,
       data.status,
       wallet,
+      data.createdAt,
+      data.updatedAt,
     );
 
     aggregate.setCreatedAt(data.createdAt);

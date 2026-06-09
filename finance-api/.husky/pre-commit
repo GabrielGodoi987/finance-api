@@ -1,2 +1,13 @@
-# Run all unit test before commit
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "🔍 Running linter..."
+npm run lint
+
+echo "🔨 Building project..."
+npm run build
+
+echo "✅ Running unit tests..."
 npm run test:unit
+
+echo "✨ Pre-commit checks passed!"

@@ -5,9 +5,9 @@ export abstract class AggregateBase {
   private createdAt: Date;
   private updatedAt: Date;
 
-  constructor() {
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
+  constructor(createdAt: Date, updatedAt: Date) {
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 
   addEvent(event: DomainEventBase) {

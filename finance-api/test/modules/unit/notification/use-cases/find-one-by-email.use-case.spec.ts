@@ -31,7 +31,10 @@ describe('FindOneByEmail - unit tests', () => {
   });
 
   it('should return notification when found and owned by user', async () => {
-    const fakeNotification = { getId: () => 'abc', getUserId: () => 'user-1' } as any;
+    const fakeNotification = {
+      getId: () => 'abc',
+      getUserId: () => 'user-1',
+    } as any;
     mockNotificationRepository.findById.mockResolvedValue(fakeNotification);
     const result = await useCase.execute({
       id: 'abc',
@@ -51,8 +54,14 @@ describe('FindOneByEmail - unit tests', () => {
   });
 
   it('should throw BadRequestException when notification belongs to another user', async () => {
-    const fakeNotification = { getId: () => 'abc', getUserId: () => 'user-2' } as any;
+    const fakeNotification = {
+      getId: () => 'abc',
+      getUserId: () => 'user-2',
+    } as any;
+
     mockNotificationRepository.findById.mockResolvedValue(fakeNotification);
+
+    jest.spyOn(console, 'error').mockImplementation();
 
     await expect(
       useCase.execute({ id: 'abc', userId: 'user-1' }),

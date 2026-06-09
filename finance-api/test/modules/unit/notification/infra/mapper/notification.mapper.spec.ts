@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
-import { NotificationMapper } from '../../../../../../src/modules/notification/infra/mapper/notification.mapper';
 import { NotificationAggregate } from '../../../../../../src/modules/notification/domain/notification.aggregate';
+import { NotificationMapper } from '../../../../../../src/modules/notification/infra/mapper/notification.mapper';
 
 describe('NotificationMapper', () => {
   const makePrismaNotification = () => ({
@@ -10,9 +10,17 @@ describe('NotificationMapper', () => {
     title: 'Wallet Created',
     content: 'Your wallet has been created successfully',
     aggregateId: randomUUID(),
-    createdAt: new Date('2025-01-01'),
-    updatedAt: new Date('2025-06-01'),
+    createdAt: new Date('2025-01-01T00:00:00z'),
+    updatedAt: new Date('2025-06-01T00:00:00z'),
     readAt: null as Date | null,
+  });
+
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   describe('toAggregate', () => {

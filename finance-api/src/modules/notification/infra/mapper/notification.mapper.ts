@@ -11,6 +11,8 @@ export class NotificationMapper {
       notification.content,
       notification.aggregateId,
       notification.readAt,
+      notification.createdAt,
+      notification.updatedAt,
     );
   }
 
