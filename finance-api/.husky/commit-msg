@@ -1,0 +1,16 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Validate commit message format
+if ! head -1 "$1" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|chore|ci|revert)(\(.+\))?!?: .{1,}'; then
+  echo "❌ Invalid commit message format"
+  echo ""
+  echo "Commit messages should follow the pattern:"
+  echo "  <type>(<scope>): <subject>"
+  echo ""
+  echo "Types: feat, fix, docs, style, refactor, perf, test, chore, ci, revert"
+  echo "Example: feat(auth): add login functionality"
+  exit 1
+fi
+
+echo "✅ Commit message validated"
