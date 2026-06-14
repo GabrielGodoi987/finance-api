@@ -187,12 +187,12 @@ Controller → @CurrentUser() user → useCase.execute({ userId: user.userId })
 ## 6. Limpeza e Refatoração — Prioridade: BAIXA
 
 ### 6.1 Typos
-- [ ] `reuqest-deactivate.ts` → `request-deactivation.use-case.ts`
-- [ ] `oder.entity.ts` → `order.entity.ts`
-- [ ] `Satatus.enum.ts` → `status.enum.ts`
-- [ ] `CreationgFailedEvent` → `CreationFailedEvent`
-- [ ] `SustemUserAggregate` → `SystemUserAggregate`
-- [ ] `repositorie/` → remover diretório duplicado
+- [ x ] `reuqest-deactivate.ts` → `request-deactivation.use-case.ts`
+- [ x ] `oder.entity.ts` → `order.entity.ts`
+- [ x ] `Satatus.enum.ts` → `status.enum.ts`
+- [ x ] `CreationgFailedEvent` → `CreationFailedEvent`
+- [ x ] `SustemUserAggregate` → `SystemUserAggregate`
+- [ x ] `repositorie/` → remover diretório duplicado
 
 ### 6.2 Arquivos de Domínio Duplicados
 - [ ] `src/domain/entities/` contém `asset.entity.ts` e `oder.entity.ts` — verificar se são usados ou se devem ser removidos (módulo `system/assets` usa PrismaService diretamente)

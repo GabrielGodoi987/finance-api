@@ -1,6 +1,7 @@
 import { HttpStatus, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { envs } from './commons/constants/envs.constants';
 import { AppModule } from './modules/app.module';
 
 async function bootstrap() {
@@ -10,7 +11,10 @@ async function bootstrap() {
     .setTitle('Finance API')
     .setDescription('API para gerenciamento de assets e orders')
     .setVersion('1.0')
-    .addApiKey({ type: 'apiKey', name: 'x-api-token', in: 'header' }, 'x-api-token')
+    .addApiKey(
+      { type: 'apiKey', name: 'x-api-token', in: 'header' },
+      'x-api-token',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -25,6 +29,6 @@ async function bootstrap() {
       },
     }),
   );
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(envs.PORT ?? 3000);
 }
 bootstrap();

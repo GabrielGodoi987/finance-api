@@ -6,7 +6,7 @@ export class SystemUserCreatedEvent extends DomainEventBase {
   }
 }
 
-export class SystemUserCreationgFailedEvent extends DomainEventBase {
+export class SystemUserCreationFailedEvent extends DomainEventBase {
   constructor(aggregateId: string, aggregateType: string, rawData: string) {
     super('SystemUser.creation.failed', aggregateId, aggregateType, rawData);
   }

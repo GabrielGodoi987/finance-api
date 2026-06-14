@@ -4,7 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDocumentPipe } from './pipes/user-document.pipe';
 import { CreateUseCase } from './use-case/create.use-case';
-import { RequestDeactivationUseCase } from './use-case/reuqest-deactivate';
+import { RequestDeactivationUseCase } from './use-case/request-deactivation.use-case';
 import { UpdateUseCase } from './use-case/update.use-case';
 
 @ApplicationController('client/users')

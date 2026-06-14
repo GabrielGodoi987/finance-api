@@ -1,4 +1,8 @@
 import { Module } from '@nestjs/common';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
-@Module({})
+@Module({
+  imports: [],
+  providers: [JwtStrategy],
+})
 export class IAMmodule {}

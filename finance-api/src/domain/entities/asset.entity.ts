@@ -1,5 +1,5 @@
 import { BaseEntity } from './base.entity';
-import { OrderEntity } from './oder.entity';
+import { OrderEntity } from './order.entity';
 
 export class AssetEntity extends BaseEntity {
   private symbol: string;
