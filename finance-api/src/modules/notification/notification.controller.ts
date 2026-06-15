@@ -1,6 +1,9 @@
-import { Body, Get, Param, Patch, Put, Query } from '@nestjs/common';
+import { Body, Param, Query } from '@nestjs/common';
 import { ApplicationController } from '../../commons/decorators/application/application.decorator';
 import { CurrentUser } from '../../commons/decorators/current-user/current-user.decorator';
+import { GetRoute } from '../../commons/decorators/application/controller/get-route.decorator';
+import { PatchRoute } from '../../commons/decorators/application/controller/patch-route.decorator';
+import { PutRoute } from '../../commons/decorators/application/controller/put-route.decorator';
 import { FindNotificationDto } from './dto/find-notification.dto';
 import { MarkReadDto } from './dto/mark-read.dto';
 import { FindAllUseCase } from './use-cases/find-all.use-case';
@@ -17,14 +20,14 @@ export class NotificationController {
     private readonly markAllAsReadUseCase: MarkAllAsReadUseCase,
   ) {}
 
-  @Get('user/notifications')
+  @GetRoute('user/notifications', {}, { status: 200, description: 'Lista todas as notificações do usuário' })
   async findAll(@Query() query: FindNotificationDto) {
     return await this.findAllUseCase.execute({
       ...query,
     });
   }
 
-  @Get('user/:notificationId')
+  @GetRoute('user/:notificationId', {}, { status: 200, description: 'Obtém uma notificação específica' })
   async findOne(
     @CurrentUser() user: { userId: string },
     @Param('notificationId') notificationId: string,
@@ -35,7 +38,7 @@ export class NotificationController {
     });
   }
 
-  @Patch('user/:email/read/:notificationId')
+  @PatchRoute('user/:email/read/:notificationId', {}, { status: 200, description: 'Marca uma notificação como lida' })
   async markOneAsRead(
     @Param('email') email: string,
     @CurrentUser() user: { userId: string },
@@ -44,7 +47,7 @@ export class NotificationController {
     return await this.markOneAsReadUseCase.execute({ notificationId, email });
   }
 
-  @Put('user/:email/read-all')
+  @PutRoute('user/:email/read-all', { type: MarkReadDto }, { status: 200, description: 'Marca todas as notificações como lidas' })
   async markAllAsRead(
     @Param('email') email: string,
     @CurrentUser() user: { userId: string },

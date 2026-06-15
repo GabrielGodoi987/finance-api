@@ -1,4 +1,5 @@
 import { AggregateBase } from '../../../../commons/lib/aggregate.base';
+import { UserRole } from '../../../../domain/value-objects/user-role.enum';
 import { UserStatus } from '../../../../domain/value-objects/user-status.enum';
 import {
   UserCreatedEvent,
@@ -12,7 +13,7 @@ export class UserAggregate extends AggregateBase {
   private email: string;
   private password: string;
   private document: string;
-  private role: string;
+  private role: UserRole;
   private status: string;
   private wallet: WalletEntity;
 
@@ -22,7 +23,7 @@ export class UserAggregate extends AggregateBase {
     email: string,
     password: string,
     document: string,
-    role: string,
+    role: UserRole,
     status: string,
     wallet: WalletEntity,
     createdAt: Date,
@@ -45,7 +46,7 @@ export class UserAggregate extends AggregateBase {
     email: string,
     password: string,
     document: string,
-    role: string,
+    role: UserRole,
   ): UserAggregate {
     const wallet = WalletEntity.create(id);
     const aggregate = new UserAggregate(
@@ -73,7 +74,7 @@ export class UserAggregate extends AggregateBase {
     email: string;
     password: string;
     document: string;
-    role: string;
+    role: UserRole;
     status: string;
     createdAt: Date;
     updatedAt: Date;
@@ -138,7 +139,7 @@ export class UserAggregate extends AggregateBase {
     return this.document;
   }
 
-  getRole(): string {
+  getRole(): UserRole {
     return this.role;
   }
 

@@ -3,6 +3,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ApiTokenMiddleware } from '../commons/middlewares/api-token/api-token.middleware';
+import { IamModule } from './IAM/iam.module';
 import { NotificationModule } from './notification/notification.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { OrdersModule } from './processing/orders/orders.module';
@@ -34,6 +35,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     TransactionsModule,
     AssetsModule,
     OrdersModule,
+    IamModule,
     PrismaModule,
     SharedModule,
     NotificationModule,

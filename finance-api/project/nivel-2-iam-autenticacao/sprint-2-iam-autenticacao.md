@@ -28,7 +28,8 @@ Implementar o módulo completo de autenticação e autorização (JWT), incluind
 | F01-R04 | Importar `IAMModule` no `AppModule` |
 
 **Critérios de aceite:**
-- [ ] Módulo compila e é carregado na inicialização
+
+- [ x ] Módulo compila e é carregado na inicialização
 
 ---
 
@@ -46,9 +47,10 @@ Implementar o módulo completo de autenticação e autorização (JWT), incluind
 | F02-R04 | Retorna `{ access_token: string }` em caso de sucesso |
 
 **Critérios de aceite:**
-- [ ] `POST /auth/sign-in` com credenciais válidas retorna 200 + JWT
-- [ ] `POST /auth/sign-in` com email inválido retorna 401
-- [ ] `POST /auth/sign-in` com senha inválida retorna 401
+
+- [ x ] `POST /auth/sign-in` com credenciais válidas retorna 200 + JWT
+- [ x ] `POST /auth/sign-in` com email inválido retorna 401
+- [ x ] `POST /auth/sign-in` com senha inválida retorna 401
 
 ---
 
@@ -65,8 +67,9 @@ Implementar o módulo completo de autenticação e autorização (JWT), incluind
 | F03-R03 | `findByEmail(email)` — busca usuário no repositório (injeção de dependência) |
 
 **Critérios de aceite:**
-- [ ] Senha é validada com bcrypt.compare
-- [ ] Payload do JWT contém `sub`, `email`, `name`, `role`
+
+- [ x ] Senha é validada com bcrypt.compare
+- [ x ] Payload do JWT contém `sub`, `email`, `name`, `role`
 
 ---
 
@@ -82,8 +85,8 @@ Implementar o módulo completo de autenticação e autorização (JWT), incluind
 | F04-R02 | Configurada para ler token do header `Authorization: Bearer <token>` |
 
 **Critérios de aceite:**
-- [ ] Rota protegida com `AuthGuard('jwt')` funciona
-- [ ] `req.user` populado corretamente
+- [x] Rota protegida com `AuthGuard('jwt')` funciona
+- [x] `req.user` populado corretamente
 
 ---
 
@@ -100,7 +103,7 @@ Implementar o módulo completo de autenticação e autorização (JWT), incluind
 | F05-R03 | Retorna 403 se role for insuficiente |
 
 **Critérios de aceite:**
-- [ ] Rota com `@UserRoleDecorator('SYS_ADMIN')` bloqueia CLIENT
+- [x] Rota com `@UserRoleDecorator('SYS_ADMIN')` bloqueia CLIENT
 
 ---
 
@@ -116,7 +119,7 @@ Implementar o módulo completo de autenticação e autorização (JWT), incluind
 | F06-R02 | Aceita parâmetro opcional para extrair campo específico (ex: `@CurrentUser('userId')`) |
 
 **Critérios de aceite:**
-- [ ] Controller consegue acessar `@CurrentUser() user` e `@CurrentUser('userId') userId`
+- [x] Controller consegue acessar `@CurrentUser() user` e `@CurrentUser('userId') userId`
 
 ---
 
@@ -131,4 +134,4 @@ Implementar o módulo completo de autenticação e autorização (JWT), incluind
 | F07-R01 | Em `create.use-case.ts`, aplicar `bcrypt.hash(password, 10)` antes de criar o aggregate |
 
 **Critérios de aceite:**
-- [ ] Senha salva no banco está hasheada
+- [x] Senha salva no banco está hasheada

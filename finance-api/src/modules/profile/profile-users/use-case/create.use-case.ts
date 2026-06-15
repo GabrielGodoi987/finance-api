@@ -1,5 +1,7 @@
 import { BadRequestException, Inject } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { v4 } from 'uuid';
+import { envs } from '../../../../commons/constants/envs.constants';
 import { UserRole } from '../../../../domain/value-objects/user-role.enum';
 import { EventBus } from '../../../shared/event-broker/event-bus.service';
 import { UserRepository } from '../domain/repositories/user-repository';
@@ -22,11 +24,13 @@ export class CreateUseCase {
     }
 
     try {
+      const hashedPassword = await bcrypt.hash(password, envs.SALT);
+
       const userAggregate = UserAggregate.create(
         v4(),
         name,
         email,
-        password,
+        hashedPassword,
         document,
         UserRole.CLIENT,
       );

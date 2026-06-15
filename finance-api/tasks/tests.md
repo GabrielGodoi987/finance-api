@@ -83,7 +83,26 @@
 **O que testar:**
 - `application.decorator.ts` — Prefixo da rota (`finance/api/v1/`); `ApiTags` adicionada
 - `user-role.decorator.ts` — Metadata `user-role` definida corretamente
-- `current-user.decorator.ts` — Extração de `req.user` do contexto
+- `current-user.decorator.ts` — Extração de `req.user` completo; extração de campo específico via `@CurrentUser('userId')`, `@CurrentUser('email')`
+
+---
+
+### 1.5.1 Commons — Route Decorators (`src/commons/decorators/application/controller/`)
+
+| Arquivo | Tipo | Unit Test | Status |
+|---|---|---|---|
+| `get-route.decorator.ts` | Decorator | `test/modules/unit/commons/decorators/get-route.decorator.spec.ts` | [ ] |
+| `post-route.decorator.ts` | Decorator | `test/modules/unit/commons/decorators/post-route.decorator.spec.ts` | [ ] |
+| `put-route.decorator.ts` | Decorator | `test/modules/unit/commons/decorators/put-route.decorator.spec.ts` | [ ] |
+| `patch-route.decorator.ts` | Decorator | `test/modules/unit/commons/decorators/patch-route.decorator.spec.ts` | [ ] |
+| `delete-route.decorator.ts` | Decorator | `test/modules/unit/commons/decorators/delete-route.decorator.spec.ts` | [ ] |
+
+**O que testar:**
+- `get-route.decorator.ts` — Aplica `@Get()`, `@ApiQuery()`, `@ApiResponse()`; path e options passadas corretamente
+- `post-route.decorator.ts` — Aplica `@Post()`, `@ApiBody()`, `@ApiResponse()`; path e options passadas corretamente
+- `put-route.decorator.ts` — Aplica `@Put()`, `@ApiBody()`, `@ApiResponse()`; path e options passadas corretamente
+- `patch-route.decorator.ts` — Aplica `@Patch()`, `@ApiBody()`, `@ApiResponse()`; path e options passadas corretamente
+- `delete-route.decorator.ts` — Aplica `@Delete()`, `@ApiResponse()`; path e options passadas corretamente
 
 ---
 

@@ -1,3 +1,4 @@
+import { UserRole } from '../../../../../domain/value-objects/user-role.enum';
 import { UserAggregate } from '../../domain/user.aggregate';
 
 type PrismaUser = {
@@ -21,7 +22,7 @@ export class UserMapper {
       email: user.email,
       password: user.password,
       document: user.document,
-      role: user.role,
+      role: user.role as UserRole,
       status: user.status,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
