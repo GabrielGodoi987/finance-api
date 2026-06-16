@@ -37,12 +37,12 @@
 |---|---|---|---|
 | `base.entity.ts` | Base Entity | `test/modules/unit/domain/entities/base.entity.spec.ts` | [ ] |
 | `asset.entity.ts` | Entity | `test/modules/unit/domain/entities/asset.entity.spec.ts` | [ ] |
-| `oder.entity.ts` | Entity | `test/modules/unit/domain/entities/oder.entity.spec.ts` | [ ] |
+| `order.entity.ts` | Entity | `test/modules/unit/domain/entities/order.entity.spec.ts` | [ ] |
 
 **O que testar:**
 - `base.entity.ts` — Criação com id único; getters de createdAt/updatedAt
 - `asset.entity.ts` — Criação; associação com símbolo
-- `oder.entity.ts` — Criação; validação de preço
+- `order.entity.ts` — Criação; validação de preço
 
 ---
 
@@ -83,7 +83,26 @@
 **O que testar:**
 - `application.decorator.ts` — Prefixo da rota (`finance/api/v1/`); `ApiTags` adicionada
 - `user-role.decorator.ts` — Metadata `user-role` definida corretamente
-- `current-user.decorator.ts` — Extração de `req.user` do contexto
+- `current-user.decorator.ts` — Extração de `req.user` completo; extração de campo específico via `@CurrentUser('userId')`, `@CurrentUser('email')`
+
+---
+
+### 1.5.1 Commons — Route Decorators (`src/commons/decorators/application/controller/`)
+
+| Arquivo | Tipo | Unit Test | Status |
+|---|---|---|---|
+| `get-route.decorator.ts` | Decorator | `test/modules/unit/commons/decorators/get-route.decorator.spec.ts` | [ ] |
+| `post-route.decorator.ts` | Decorator | `test/modules/unit/commons/decorators/post-route.decorator.spec.ts` | [ ] |
+| `put-route.decorator.ts` | Decorator | `test/modules/unit/commons/decorators/put-route.decorator.spec.ts` | [ ] |
+| `patch-route.decorator.ts` | Decorator | `test/modules/unit/commons/decorators/patch-route.decorator.spec.ts` | [ ] |
+| `delete-route.decorator.ts` | Decorator | `test/modules/unit/commons/decorators/delete-route.decorator.spec.ts` | [ ] |
+
+**O que testar:**
+- `get-route.decorator.ts` — Aplica `@Get()`, `@ApiQuery()`, `@ApiResponse()`; path e options passadas corretamente
+- `post-route.decorator.ts` — Aplica `@Post()`, `@ApiBody()`, `@ApiResponse()`; path e options passadas corretamente
+- `put-route.decorator.ts` — Aplica `@Put()`, `@ApiBody()`, `@ApiResponse()`; path e options passadas corretamente
+- `patch-route.decorator.ts` — Aplica `@Patch()`, `@ApiBody()`, `@ApiResponse()`; path e options passadas corretamente
+- `delete-route.decorator.ts` — Aplica `@Delete()`, `@ApiResponse()`; path e options passadas corretamente
 
 ---
 
@@ -101,7 +120,7 @@
 
 | Arquivo | Tipo | Unit Test | Status |
 |---|---|---|---|
-| `consulting/consulting.pattern.ts` | Pattern | `test/modules/unit/commons/patterns/consulting.pattern.spec.ts` | [ ] |
+| `unit-of-work/unit-of-work.pattern.ts` | Pattern | `test/modules/unit/commons/patterns/unit-of-work.pattern.spec.ts` | [ ] |
 
 ---
 
@@ -163,13 +182,13 @@
 
 | Arquivo | Tipo | Unit Test | Status |
 |---|---|---|---|
-| `findall.use-case.ts` | Use Case | `test/modules/unit/notification/use-cases/findall.use-case.spec.ts` | [ ] |
-| `find-one-by-email.use-case.ts` | Use Case | `test/modules/unit/notification/use-cases/find-one-by-email.use-case.spec.ts` | [ ] |
-| `mark-all-as-read.use-case.ts` | Use Case | `test/modules/unit/notification/use-cases/mark-all-as-read.use-case.spec.ts` | [ ] |
-| `mark-one-as-read.use-case.ts` | Use Case | `test/modules/unit/notification/use-cases/mark-one-as-read.use-case.spec.ts` | [ ] |
+| `find-all.use-case.ts` | Use Case | `test/modules/unit/notification/use-cases/findAll.use-case.spec.ts` | [OK] |
+| `find-one-by-email.use-case.ts` | Use Case | `test/modules/unit/notification/use-cases/find-one-by-email.use-case.spec.ts` | [OK] |
+| `mark-all-as-read.use-case.ts` | Use Case | `test/modules/unit/notification/use-cases/mark-all-as-read.use-case.spec.ts` | [OK] |
+| `mark-one-as-read.use-case.ts` | Use Case | `test/modules/unit/notification/use-cases/mark-one-as-read.use-case.spec.ts` | [OK] |
 
 **O que testar:**
-- `findall.use-case.ts` — Retorna lista de notificações do usuário; lista vazia se não há
+- `find-all.use-case.ts` — Retorna lista de notificações do usuário; lista vazia se não há
 - `find-one-by-email.use-case.ts` — Busca por email; NotFoundException se não existe
 - `mark-all-as-read.use-case.ts` — Marca todas como lidas
 - `mark-one-as-read.use-case.ts` — Marca uma como lida; NotFoundException se não existe; validação de ownership
@@ -261,7 +280,7 @@
 > Nota: Arquivo fonte está nomeado como `reuqest-deactivate.ts` (typo). Renomear primeiro.
 
 **O que testar:**
-- `create.use-case.ts` — Cria usuário; retorna sucesso; BadRequestException se email duplicado
+- `create.use-case.ts` — Cria usuário; retorna sucesso; BadRequestException se email duplicado; **senha é hasheada com bcrypt.hash(password, 10) antes de salvar**
 - `update.use-case.ts` — Atualiza campos; NotFoundException se não existe
 - `request-deactivation.use-case.ts` — Muda status; NotFoundException se não existe
 
@@ -289,6 +308,19 @@
 
 ---
 
+### 1.20.1 Profile — Controller (`src/modules/profile/profile-users/`)
+
+| Arquivo | Tipo | Unit Test | Status |
+|---|---|---|---|
+| `user.controller.ts` | Controller | `test/modules/unit/profile/profile-users/user.controller.spec.ts` | [ ] |
+
+**O que testar:**
+- Cada rota (`POST /client/users`, `PATCH /client/users/:id`, `POST /client/users/:id/deactivation`) chama o use case correspondente
+- Parse correto de parâmetros (body, param)
+- Decorators de rota e validação aplicados
+
+---
+
 ### 1.21 IAM — Auth (`src/modules/IAM/`)
 
 | Arquivo | Tipo | Unit Test | Status |
@@ -297,20 +329,40 @@
 | `auth/auth.controller.ts` | Controller | `test/modules/unit/IAM/auth/auth.controller.spec.ts` | [ ] |
 | `strategies/jwt.strategy.ts` | Strategy | `test/modules/unit/IAM/strategies/jwt.strategy.spec.ts` | [ ] |
 | `guards/roles.guard.ts` | Guard | `test/modules/unit/IAM/guards/roles.guard.spec.ts` | [ ] |
-| `decorators/current-user.decorator.ts` | Decorator | `test/modules/unit/IAM/decorators/current-user.decorator.spec.ts` | [ ] |
+
+**O que testar (AuthController):**
+- Cada rota (`/sign-in`, `/logout`, `/refresh-token`) chama o use case correspondente
+- Validação de LoginDto (email, password)
+- Response com userData, accessToken, refreshToken
+- Decorators de rota aplicados corretamente (`@PostRoute`)
 
 ---
 
-### 1.22 IAM — Auth Service (`src/modules/IAM/auth/`)
+### 1.22 IAM — Auth Use Cases & Middleware (`src/modules/IAM/auth/`)
 
 | Arquivo | Tipo | Unit Test | Status |
 |---|---|---|---|
-| `auth.service.ts` | Service | `test/modules/unit/IAM/auth/auth.service.spec.ts` | [ ] |
+| `use-case/authenticate.use-case.ts` | Use Case | `test/modules/unit/IAM/auth/use-case/authenticate.use-case.spec.ts` | [ ] |
+| `use-case/refresh-token.use-case.ts` | Use Case | `test/modules/unit/IAM/auth/use-case/refresh-token.use-case.spec.ts` | [ ] |
+| `middleware/auth.middleware.ts` | Middleware | `test/modules/unit/IAM/auth/middleware/auth.middleware.spec.ts` | [ ] |
+| `strategy/cookies/cookie.service.ts` | Service | `test/modules/unit/IAM/auth/strategy/cookies/cookie.service.spec.ts` | [ ] |
 
 **O que testar:**
-- Sign-in com email e senha corretos → retorna JWT
-- Sign-in com email incorreto → UnauthorizedException
-- Sign-in com senha incorreta → UnauthorizedException
+- `authenticate.use-case.ts` — Sign-in com credenciais corretas → retorna JWT; email incorreto → UnauthorizedException; senha incorreta → UnauthorizedException
+- `refresh-token.use-case.ts` — Refresh token válido → novos tokens; token inválido → UnauthorizedException
+- `auth.middleware.ts` — Token válido → adiciona user no request; token ausente → 401; token inválido → 401
+- `cookie.service.ts` — Geração e parsing de cookies; configurações de secure/httpOnly
+
+---
+
+### 1.22.1 IAM — Decorators (`src/modules/IAM/decorators/`)
+
+| Arquivo | Tipo | Unit Test | Status |
+|---|---|---|---|
+| `roles.decorator.ts` | Decorator | `test/modules/unit/IAM/decorators/roles.decorator.spec.ts` | [ ] |
+
+**O que testar:**
+- `roles.decorator.ts` — Metadata `roles` definida corretamente com `@SetMetadata`
 
 ---
 
@@ -358,6 +410,18 @@
 
 ---
 
+### 1.26.1 Commons — Constants (`src/commons/constants/`)
+
+| Arquivo | Tipo | Unit Test | Status |
+|---|---|---|---|
+| `envs.constants.ts` | Constants | `test/modules/unit/commons/constants/envs.constants.spec.ts` | [ ] |
+
+**O que testar:**
+- Valores das constantes de ambiente (porta, jwt secret, jwt expiration, etc.)
+- Valores default quando variáveis de ambiente não estão definidas
+
+---
+
 ### 1.27 Processing — Orders (`src/modules/processing/orders/`)
 
 | Arquivo | Tipo | Unit Test | Status |
@@ -367,7 +431,7 @@
 | `dto/createOrder.dto.ts` | DTO | — (testado via controller) | — |
 | `dto/updateOrder.dto.ts` | DTO | — | — |
 | `enums/order-type.enum.ts` | Enum | `test/modules/unit/processing/orders/enums/order-type.enum.spec.ts` | [ ] |
-| `enums/Satatus.enum.ts` | Enum | `test/modules/unit/processing/orders/enums/status.enum.spec.ts` | [ ] |
+| `enums/status.enum.ts` | Enum | `test/modules/unit/processing/orders/enums/status.enum.spec.ts` | [ ] |
 
 **O que testar:**
 - `orders.service.ts` — `findAll` retorna lista; `create` com assetId inválido lança NotFoundException; cálculo de `totalPrice = quantity * price`
@@ -393,6 +457,19 @@
 | Arquivo | Tipo | Unit Test | Status |
 |---|---|---|---|
 | `prisma.service.ts` | Service | `test/modules/unit/prisma/prisma.service.spec.ts` | [ ] |
+
+---
+
+### 1.30 Infra — Database (`src/infra/database/prisma-context/`)
+
+| Arquivo | Tipo | Unit Test | Status |
+|---|---|---|---|
+| `prisma.context.ts` | Context | `test/modules/unit/infra/database/prisma-context/prisma.context.spec.ts` | [ ] |
+| `prisma.unit-of-work.ts` | Unit of Work | `test/modules/unit/infra/database/prisma-context/prisma.unit-of-work.spec.ts` | [ ] |
+
+**O que testar:**
+- `prisma.context.ts` — Inicialização do PrismaClient; conexão com banco; `onModuleDestroy` encerra conexão
+- `prisma.unit-of-work.ts` — Transações; commit; rollback em caso de erro
 
 ---
 
@@ -474,17 +551,18 @@
 
 | Módulo | Source | Testados | Pendentes Unit | Pendentes E2E | Cobertura |
 |---|---|---|---|---|---|
-| domain | 10 | 0 | 8 | — | 0% |
-| commons | 8 | 1* | 5 | — | 12.5% |
-| notification | 13 | 1 | 8 | 4 | 7.7% |
-| profile | 20 | 1 | 13 | 3 | 5% |
-| IAM | 3 | 0 | 3 | 6 | 0% |
+| domain | 10 | 0 | 10 | — | 0% |
+| commons | 9 | 1* | 8 | — | 11.1% |
+| notification | 13 | 5 | 4 | 4 | 38.5% |
+| profile | 21 | 1 | 14 | 3 | 4.8% |
+| IAM | 8 | 0 | 8 | 6 | 0% |
 | system | 17 | 0 | 12 | 4 | 0% |
 | processing | 7 | 0 | 5 | 4 | 0% |
 | shared | 4 | 0 | 3 | — | 0% |
 | transactions | 1 | 0 | 0 | — | 0% |
 | prisma | 2 | 0 | 1 | — | 0% |
-| **TOTAL** | **85** | **3** | **58** | **21** | **3.5%** |
+| infra | 2 | 0 | 2 | — | 0% |
+| **TOTAL** | **94** | **7** | **67** | **21** | **7.4%** |
 
 > `*` — Middleware test existe mas quebrado (precisa correção).
 
@@ -503,8 +581,6 @@
 |---|---|
 | `test/modules/unit/commons/middlewares/api-token.middleware.spec.ts` | Teste quebrado — mock não implementa `req.header()` |
 | `src/modules/profile/profile-users/use-case/reuqest-deactivate.ts` | Typo no nome do arquivo (dificulta localização do test) |
-| `src/modules/processing/orders/enums/Satatus.enum.ts` | Typo no nome do arquivo e da classe |
-| `src/domain/entities/oder.entity.ts` | Typo no nome do arquivo |
 | `src/modules/system/system-users/domain/system-user.aggregate.ts` | Classe nomeada `SustemUserAggregate` (typo) |
 | `src/modules/system/common/system-decorators/system-application.decorator.ts` | Template literal quebrado |
 | `src/modules/profile/profile-users/domain/repositorie/` | Diretório duplicado com typo |
@@ -517,6 +593,10 @@
 |---|---|---|
 | `test/modules/unit/notification/infra/mapper/notification.mapper.spec.ts` | NotificationMapper (toAggregate, toPersistence, round-trip) | ✅ Passando |
 | `test/modules/unit/profile/profile-users/infra/mappers/user.mapper.spec.ts` | UserMapper (toAggregate, toPersistence, round-trip) | ✅ Passando |
+| `test/modules/unit/notification/use-cases/findAll.use-case.spec.ts` | FindAllUseCase | ✅ Passando |
+| `test/modules/unit/notification/use-cases/find-one-by-email.use-case.spec.ts` | FindOneByEmailUseCase | ✅ Passando |
+| `test/modules/unit/notification/use-cases/mark-all-as-read.use-case.spec.ts` | MarkAllAsReadUseCase | ✅ Passando |
+| `test/modules/unit/notification/use-cases/mark-one-as-read.use-case.spec.ts` | MarkOneAsReadUseCase | ✅ Passando |
 | `test/modules/unit/commons/middlewares/api-token.middleware.spec.ts` | ApiTokenMiddleware (4 casos) | ❌ Falhando |
 | `test/modules/e2e/assets.controller.e2e-spec.ts` | AssetsController (3 stubs vazios) | ⏳ Stub |
 | `test/modules/e2e/order.controller.e2e-spec.ts` | OrdersController | 📄 Vazio |

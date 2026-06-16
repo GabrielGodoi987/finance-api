@@ -38,7 +38,7 @@ model User {
   name     String
   email    String     @unique
   document String     @unique
-  status   UserStatus @default(CREATED) @map("is_active")
+  status   UserStatus @default(CREATED)
   role     UserRole   @default(CLIENT)
   password String
 

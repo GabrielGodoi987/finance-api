@@ -1,5 +1,7 @@
-import { Body, Param, Patch, Post } from '@nestjs/common';
+import { Body, Param } from '@nestjs/common';
 import { ApplicationController } from '../../../commons/decorators/application/application.decorator';
+import { PatchRoute } from '../../../commons/decorators/application/controller/patch-route.decorator';
+import { PostRoute } from '../../../commons/decorators/application/controller/post-route.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDocumentPipe } from './pipes/user-document.pipe';
@@ -15,7 +17,11 @@ export class UserController {
     private readonly requestDeactivationUseCase: RequestDeactivationUseCase,
   ) {}
 
-  @Post()
+  @PostRoute(
+    '',
+    { type: CreateUserDto },
+    { status: 201, description: 'Usuário criado com sucesso' },
+  )
   create(
     @Body() createUserDto: CreateUserDto,
     @Body('document', UserDocumentPipe)
@@ -27,12 +33,20 @@ export class UserController {
     });
   }
 
-  @Patch(':id')
+  @PatchRoute(
+    ':id',
+    { type: UpdateUserDto },
+    { status: 200, description: 'Usuário atualizado com sucesso' },
+  )
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.updateUseCase.execute({ ...updateUserDto, id });
   }
 
-  @Post(':id/deactivation')
+  @PostRoute(
+    ':id/deactivation',
+    {},
+    { status: 200, description: 'Solicitação de desativação enviada' },
+  )
   requestDeactivation(@Param('id') id: string) {
     return this.requestDeactivationUseCase.execute(id);
   }

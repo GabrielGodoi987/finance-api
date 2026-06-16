@@ -30,8 +30,9 @@ Preparar o terreno para o desenvolvimento: corrigir typos, instalar dependência
 | F01-R06 | Remover diretório duplicado `src/modules/profile/profile-users/domain/repositorie/` | Conteúdo obsoleto, verificar imports |
 
 **Critérios de aceite:**
+
 - [ x ] `npm run build` passa sem erros
-- [ ] Nenhum import quebrado nos módulos afetados
+- [ x ] Nenhum import quebrado nos módulos afetados
 
 ---
 
@@ -46,6 +47,7 @@ Preparar o terreno para o desenvolvimento: corrigir typos, instalar dependência
 | F02-R01 | Corrigir a concatenação no decorator para gerar o path correto da rota |
 
 **Critérios de aceite:**
+
 - [ x ] Decorator gera o prefixo correto para módulos System
 
 ---
@@ -61,6 +63,7 @@ Preparar o terreno para o desenvolvimento: corrigir typos, instalar dependência
 | F03-R01 | Instalar `@nestjs/jwt`, `@nestjs/passport`, `passport`, `passport-jwt`, `@types/passport-jwt` |
 
 **Critérios de aceite:**
+
 - [ x ] `package.json` contém as dependências
 - [ x ] `npm install` conclui sem erros
 
@@ -78,6 +81,7 @@ Preparar o terreno para o desenvolvimento: corrigir typos, instalar dependência
 | F04-R02 | Documentar todas as variáveis no `.env.example` |
 
 **Critérios de aceite:**
+
 - [ x ] `.env` contém valores padrão funcionais
 - [ x ] `.env.example` documenta todas as variáveis
 
@@ -95,4 +99,5 @@ Preparar o terreno para o desenvolvimento: corrigir typos, instalar dependência
 | F05-R02 | Garantir que `src/modules/IAM/` tenha a estrutura: `iam.module.ts`, `auth/`, `strategies/`, `guards/`, `decorators/` |
 
 **Critérios de aceite:**
-- [ ] Estrutura IAM completa e importável
+
+- [ x ] Estrutura IAM completa e importável

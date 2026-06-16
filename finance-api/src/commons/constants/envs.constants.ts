@@ -26,4 +26,8 @@ export const envs = {
   get JWT_REFRESH_EXPIRATION(): string {
     return process.env.JWT_REFRESH_EXPIRATION ?? '';
   },
+
+  get SALT(): number {
+    return Number(process.env.BCRYPT_SALT) ?? 10;
+  },
 };

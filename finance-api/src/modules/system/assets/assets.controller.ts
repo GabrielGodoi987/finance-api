@@ -1,5 +1,7 @@
-import { Body, Get, Post } from '@nestjs/common';
+import { Body } from '@nestjs/common';
 import { ApplicationController } from '../../../commons/decorators/application/application.decorator';
+import { GetRoute } from '../../../commons/decorators/application/controller/get-route.decorator';
+import { PostRoute } from '../../../commons/decorators/application/controller/post-route.decorator';
 import { AssetsService } from './assets.service';
 import { CreateAssetDto } from './dto/createAsset.dto';
 
@@ -7,12 +9,16 @@ import { CreateAssetDto } from './dto/createAsset.dto';
 export class AssetsController {
   constructor(private readonly assetsService: AssetsService) {}
 
-  @Get()
+  @GetRoute('', {}, { status: 200, description: 'Lista de todos os assets' })
   public findAll() {
     return this.assetsService.findAll();
   }
 
-  @Post()
+  @PostRoute(
+    '',
+    { type: CreateAssetDto },
+    { status: 201, description: 'Asset criado com sucesso' },
+  )
   public create(@Body() assetDto: CreateAssetDto) {
     return this.assetsService.create(assetDto);
   }
